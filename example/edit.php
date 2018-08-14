@@ -53,7 +53,7 @@ $item_id = filter_input(INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT);
 			<div class="container">
 				<div class="center">
 					<?php
-                    $fb = new FormBuilder($item_id);
+                    $fb = new FormBuilder('products', $item_id);
                     $form = $fb->build_form();
                     echo $form;
                     ?>
