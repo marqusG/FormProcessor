@@ -69,7 +69,7 @@ session_start();
 				<div class="center">
 					<a class="button" href='add.php'>Aggiungi destinatario</a>
           <?php
-                    $ft = new FormTable();
+                    $ft = new FormTable('products');
                         echo $ft->build_table();
                 ?>
 				</div>
