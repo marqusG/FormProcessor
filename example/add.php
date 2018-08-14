@@ -57,7 +57,7 @@ require_once "../lib/FormBuilder.class.php";
 				<div class="row">
 					<div class="col-xs-12">
 					<?php
-            $fb = new FormBuilder();
+            $fb = new FormBuilder('produtcs');
             $form = $fb->build_form();
             echo $form;
           ?>
