@@ -1,6 +1,7 @@
 <?php
 /**
- * Class FormTable
+ * Class FormTable.
+ *
  * @author Marco Gasi
  * @author blog codingfix.com
  *
@@ -8,56 +9,63 @@
  * puts them in the given mysql table
  */
 spl_autoload_register(function () {
-    include 'FormModel.class.php';
+    include_once 'FormModel.class.php';
 });
- /**
-  * [FormTable builds a table using data stored trhough FormBuilder and FormSaver]
-  */
+/**
+ * [FormTable builds a table using data stored trhough FormBuilder and FormSaver].
+ */
 class FormTable
 {
     /**
-     * [public $table_name, the name of the table we want to process]
+     * [public $table_name, the name of the table we want to process].
+     *
      * @var [string]
      */
     private $table_name;
     /**
-     * [private instance of the class FormModel]
+     * [private instance of the class FormModel].
+     *
      * @var [object]
      */
     private $model;
     /**
-     * [private instance of config array]
+     * [private instance of config array].
+     *
      * @var [array]
      */
     private $config;
     /**
-     * [private table structure]
+     * [private table structure].
+     *
      * @var [array]
      */
     private $structure;
     /**
-     * [private the table markup to print on the page]
+     * [private the table markup to print on the page].
+     *
      * @var [string]
      */
     private $table_markup;
 
     /**
      * [__construct initializes configuration array, some variables,
-     * creates an instance of the model, and initialize the table markup]
+     * creates an instance of the model, and initialize the table markup].
      */
-    public function __construct()
+    public function __construct($table_name)
     {
-        $this->config = require "config.php";
-        $this->table_name = $config['database']['table_name'];
-        $this->model = new FormModel();
+        $this->config = require 'config.php';
+        $this->table_name = $table_name;
+        $this->model = new FormModel($this->table_name);
         $this->structure = $this->model->get_table_structure($this->table_name);
         $this->table_markup = '<table>';
     }
 
     /**
-     * [get_table_data sets the query paramters using session values and calls the model method to query the database]
-     * @param  [string] $table [the table name]
-     * @return [object]        [holds table structure and data]
+     * [get_table_data sets the query paramters using session values and calls the model method to query the database].
+     *
+     * @param [string] $table [the table name]
+     *
+     * @return [object] [holds table structure and data]
      */
     public function get_table_data($table)
     {
@@ -69,11 +77,13 @@ class FormTable
         $obj->table = $this->data;
         $obj->structure = $this->structure;
         $obj->data = $this->data;
+
         return $obj;
     }
 
     /**
-     * [build_table_head builds the table head]
+     * [build_table_head builds the table head].
+     *
      * @return [string] [table head markup]
      */
     public function build_table_head()
@@ -83,31 +93,33 @@ class FormTable
         } else {
             $orderdir = 'ASC';
         }
-        $this->table_markup .= "<table><thead><tr>";
-        for ($i=0; $i <count($this->structure); $i++) {
-            $this->table_markup .= "<td><a href='manage.php?f={$this->structure[$i]["Field"]}&o=$orderdir'>{$this->structure[$i]["Field"]}</a></td>";
+        $this->table_markup .= '<table><thead><tr>';
+        for ($i = 0; $i < count($this->structure); ++$i) {
+            $this->table_markup .= "<td><a href='manage.php?f={$this->structure[$i]['Field']}&o=$orderdir'>{$this->structure[$i]['Field']}</a></td>";
         }
         $this->table_markup .= "<td colspan='2'>Actions</td></tr></thead>";
+
         return $this->table_markup;
     }
 
     /**
-     * [build_table_body builds the table body]
+     * [build_table_body builds the table body].
+     *
      * @return [string] [table body markup]
      */
     public function build_table_body()
     {
-        $this->table_markup .= "<tbody>";
+        $this->table_markup .= '<tbody>';
         $data = $this->get_table_data($this->table_name);
         $table_structure = $data->structure;
         $table_values = $data->table;
-        for ($i=0;$i<count($table_values);$i++) {
-            $this->table_markup .= "<tr>";
+        for ($i = 0; $i < count($table_values); ++$i) {
+            $this->table_markup .= '<tr>';
             $row = $table_values[$i];
-            for ($x=0;$x<count($row);$x++) {
+            for ($x = 0; $x < count($row); ++$x) {
                 $field_name = $table_structure[$x]['Field'];
                 $field_type = $table_structure[$x]['Type'];
-                if (stristr($field_type, "tinyint") !== false) {
+                if (stristr($field_type, 'tinyint') !== false) {
                     if (!array_key_exists($field_name, $this->config['general']['radios'])) {
                         $output = $row[$field_name] == 0 ? 'Off' : 'On';
                     }
@@ -117,21 +129,24 @@ class FormTable
                 $this->table_markup .= "<td>$output</td>";
             }
             $this->table_markup .= "<td><form action='edit.php' method='post'><input type='hidden' name='item_id' value='{$row['id']}' /><input type='submit' name='edit' value='Edit' /></form></td><td><form action='delete.php' method='post'><input type='hidden' name='item_id' value='{$row['id']}' /><input type='submit' name='delete' value='Delete' /></form></td>";
-            $this->table_markup .= "</tr>";
+            $this->table_markup .= '</tr>';
         }
-        $this->table_markup .= "</tbody>";
+        $this->table_markup .= '</tbody>';
+
         return $this->table_markup;
     }
 
     /**
-     * [build_table calls needed methods to build the table]
+     * [build_table calls needed methods to build the table].
+     *
      * @return [string] [the table markup]
      */
     public function build_table()
     {
         $table = $this->build_table_head();
         $table .= $this->build_table_body();
-        $this->table_markup .= "</table>";
+        $this->table_markup .= '</table>';
+
         return $this->table_markup;
     }
 }
