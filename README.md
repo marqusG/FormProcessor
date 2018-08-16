@@ -5,6 +5,12 @@
 operations. More precisely, they allow the user to add, edit and delete records
 to/from a specific table.
 
+#Update 16 august 2018
+- fixed a bug which prevent to create multiple selects from external tables
+- removed table_name from the config file: now you must pass table_name to the 
+  constructor: this makes the class more flexible.
+
+
 ## General description
 
 ### FormBuilder class
