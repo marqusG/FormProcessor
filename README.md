@@ -90,15 +90,6 @@ $fs = new FormProcessor($item_id); //you can use this code even to save a new re
 echo $fs->save();
 ```
 
-### Save an updated record specifying dinamically a subdirectory where store uploaded files
-```php
-require_once "../lib/FormProcessor.class.php";
-$root_target_dir = $user_first_name . DIRECTORY_SEPARATOR . 'personal_files';
-$item_id = filter_input(INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT);
-$fs = new FormProcessor(root_target_dir, $item_id); //files will be saved in their specific subdirectory in www.example.com/John/personal_files/
-echo $fs->save();
-```
-
 ## Conclusions
 
 That's all folks. Hope you can find it useful and don't hexitate to contact me
