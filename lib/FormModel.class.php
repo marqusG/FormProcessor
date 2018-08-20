@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class FormModel.
  *
@@ -107,15 +108,55 @@ class FormModel
     }
 
     /**
-     * [get_files get the value of the files column for a given record].
+     * [get_pictures get the value of the pictures column for a given record].
      *
      * @param [integer] $item_id [the id of the record]
      *
      * @return [string] [a semicolon separated string which holds the files' names]
      */
-    public function get_files($item_id)
+    public function get_files($file_type, $item_id)
+    {
+        $query = "SELECT $file_type FROM $this->table_name WHERE id='$item_id'";
+        $result = $this->db->query($query);
+        if ($result) {
+            $row = mysqli_fetch_row($result);
+
+            return $row[0];
+        }
+
+        return false;
+    }
+
+    /**
+     * [get_pictures get the value of the pictures column for a given record].
+     *
+     * @param [integer] $item_id [the id of the record]
+     *
+     * @return [string] [a semicolon separated string which holds the files' names]
+     */
+    public function get_pictures($item_id)
     {
         $query = "SELECT pictures FROM $this->table_name WHERE id='$item_id'";
+        $result = $this->db->query($query);
+        if ($result) {
+            $row = mysqli_fetch_row($result);
+
+            return $row[0];
+        }
+
+        return false;
+    }
+
+    /**
+     * [get_documents get the value of the documents column for a given record].
+     *
+     * @param [integer] $item_id [the id of the record]
+     *
+     * @return [string] [a semicolon separated string which holds the files' names]
+     */
+    public function get_documents($item_id)
+    {
+        $query = "SELECT documents FROM $this->table_name WHERE id='$item_id'";
         $result = $this->db->query($query);
         if ($result) {
             $row = mysqli_fetch_row($result);
@@ -154,13 +195,15 @@ class FormModel
             $query = rtrim($query, ',');
             $query .= " WHERE id='$item_id'";
         }
+
+        // return $query;
         $this->db->query($query);
 
         return $this->db->insert_id;
     }
 
     /**
-     * [delete_item deletes a record from the table].
+     * delete_item deletes a record from the table.
      *
      * @param [integer] $item_id [the id of the record to delete]
      *
@@ -169,6 +212,34 @@ class FormModel
     public function delete_item($item_id)
     {
         $query = "DELETE FROM $this->table_name WHERE id='$item_id'";
+        $this->db->query($query);
+    }
+
+    /**
+     * Updates pictures string in table column, The actual work to remove from the string the
+     * deleted picture and to actually delete the picture files is don by FormProcessor method
+     * delete_picture.
+     *
+     * @param [string]  $pictures
+     * @param [integer] $item_id
+     */
+    public function delete_picture($pictures, $item_id)
+    {
+        $query = "UPDATE $this->table_name SET pictures='$pictures' WHERE id='$item_id'";
+        $this->db->query($query);
+    }
+
+    /**
+     * Updates documents string in table column, The actual work to remove from the string the
+     * deleted document and to actually delete the document files is done by FormProcessor method
+     * delete_document.
+     *
+     * @param [string]  $documents
+     * @param [integer] $item_id
+     */
+    public function delete_document($documents, $item_id)
+    {
+        $query = "UPDATE $this->table_name SET documents='$documents' WHERE id='$item_id'";
         $this->db->query($query);
     }
 }
