@@ -162,7 +162,7 @@ class FormProcessor
         if (isset($itemId) && is_numeric($itemId)) {
             $this->editMode = true;
             $this->itemId = $itemId;
-            $itemData = $this->model->get_item_data($this->tableName, $this->itemId);
+            $itemData = $this->model->getItemData($this->tableName, $this->itemId);
             $this->item = $itemData[0];
         }
     }
