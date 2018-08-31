@@ -17,11 +17,11 @@ spl_autoload_register(function () {
 class FormTable
 {
     /**
-     * [public $table_name, the name of the table we want to process].
+     * [public $tableName, the name of the table we want to process].
      *
      * @var [string]
      */
-    private $table_name;
+    private $tableName;
     /**
      * [private instance of the class FormModel].
      *
@@ -45,33 +45,33 @@ class FormTable
      *
      * @var [string]
      */
-    private $table_markup;
+    private $tableMarkup;
 
     /**
      * [__construct initializes configuration array, some variables,
      * creates an instance of the model, and initialize the table markup].
      */
-    public function __construct($table_name)
+    public function __construct($tableName)
     {
         $this->config = require 'config.php';
-        $this->table_name = $table_name;
-        $this->model = new FormModel($this->table_name);
-        $this->structure = $this->model->get_table_structure($this->table_name);
-        $this->table_markup = '<table>';
+        $this->tableName = $tableName;
+        $this->model = new FormModel($this->tableName);
+        $this->structure = $this->model->getTableStructure($this->tableName);
+        $this->tableMarkup = '<table>';
     }
 
     /**
-     * [get_table_data sets the query paramters using session values and calls the model method to query the database].
+     * [getTableData sets the query paramters using session values and calls the model method to query the database].
      *
      * @param [string] $table [the table name]
      *
      * @return [object] [holds table structure and data]
      */
-    public function get_table_data($table)
+    public function getTableData($table)
     {
         $_SESSION['orderby'] = isset($_GET['f']) ? $_GET['f'] : 'id';
         $_SESSION['orderdir'] = isset($_GET['o']) ? $_GET['o'] : 'ASC';
-        $result = $this->model->get_table_values($table, $_SESSION['orderby'], $_SESSION['orderdir']);
+        $result = $this->model->getTableValues($table, $_SESSION['orderby'], $_SESSION['orderdir']);
         $this->data = $result;
         $obj = new stdClass();
         $obj->table = $this->data;
@@ -82,39 +82,39 @@ class FormTable
     }
 
     /**
-     * [build_table_head builds the table head].
+     * [buildTableHead builds the table head].
      *
      * @return [string] [table head markup]
      */
-    public function build_table_head()
+    public function buildTableHead()
     {
         if (isset($_SESSION['orderdir'])) {
             $orderdir = $_SESSION['orderdir'] == 'ASC' ? 'DESC' : 'ASC';
         } else {
             $orderdir = 'ASC';
         }
-        $this->table_markup .= '<table><thead><tr>';
+        $this->tableMarkup .= '<table><thead><tr>';
         for ($i = 0; $i < count($this->structure); ++$i) {
-            $this->table_markup .= "<td><a href='manage.php?f={$this->structure[$i]['Field']}&o=$orderdir'>{$this->structure[$i]['Field']}</a></td>";
+            $this->tableMarkup .= "<td><a href='manage.php?f={$this->structure[$i]['Field']}&o=$orderdir'>{$this->structure[$i]['Field']}</a></td>";
         }
-        $this->table_markup .= "<td colspan='2'>Actions</td></tr></thead>";
+        $this->tableMarkup .= "<td colspan='2'>Actions</td></tr></thead>";
 
-        return $this->table_markup;
+        return $this->tableMarkup;
     }
 
     /**
-     * [build_table_body builds the table body].
+     * [buildTableBody builds the table body].
      *
      * @return [string] [table body markup]
      */
-    public function build_table_body()
+    public function buildTableBody()
     {
-        $this->table_markup .= '<tbody>';
-        $data = $this->get_table_data($this->table_name);
+        $this->tableMarkup .= '<tbody>';
+        $data = $this->getTableData($this->tableName);
         $table_structure = $data->structure;
         $table_values = $data->table;
         for ($i = 0; $i < count($table_values); ++$i) {
-            $this->table_markup .= '<tr>';
+            $this->tableMarkup .= '<tr>';
             $row = $table_values[$i];
             for ($x = 0; $x < count($row); ++$x) {
                 $field_name = $table_structure[$x]['Field'];
@@ -126,27 +126,27 @@ class FormTable
                 } else {
                     $output = $row[$field_name];
                 }
-                $this->table_markup .= "<td>$output</td>";
+                $this->tableMarkup .= "<td>$output</td>";
             }
-            $this->table_markup .= "<td><form action='edit.php' method='post'><input type='hidden' name='item_id' value='{$row['id']}' /><input type='submit' name='edit' value='Edit' /></form></td><td><form action='delete.php' method='post'><input type='hidden' name='item_id' value='{$row['id']}' /><input type='submit' name='delete' value='Delete' /></form></td>";
-            $this->table_markup .= '</tr>';
+            $this->tableMarkup .= "<td><form action='edit.php' method='post'><input type='hidden' name='itemId' value='{$row['id']}' /><input type='submit' name='edit' value='Edit' /></form></td><td><form action='delete.php' method='post'><input type='hidden' name='itemId' value='{$row['id']}' /><input type='submit' name='delete' value='Delete' /></form></td>";
+            $this->tableMarkup .= '</tr>';
         }
-        $this->table_markup .= '</tbody>';
+        $this->tableMarkup .= '</tbody>';
 
-        return $this->table_markup;
+        return $this->tableMarkup;
     }
 
     /**
-     * [build_table calls needed methods to build the table].
+     * [buildTable calls needed methods to build the table].
      *
      * @return [string] [the table markup]
      */
-    public function build_table()
+    public function buildTable()
     {
-        $table = $this->build_table_head();
-        $table .= $this->build_table_body();
-        $this->table_markup .= '</table>';
+        $table = $this->buildTableHead();
+        $table .= $this->buildTableBody();
+        $this->tableMarkup .= '</table>';
 
-        return $this->table_markup;
+        return $this->tableMarkup;
     }
 }

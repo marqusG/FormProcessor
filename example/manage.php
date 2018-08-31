@@ -77,7 +77,7 @@ session_start();
                 <a class="button" href='add.php'>Add to products</a>
                 <?php
                     $ft = new FormTable('products');
-                    echo $ft->build_table();
+                    echo $ft->buildTable();
                 ?>
             </div>
         </div>

@@ -121,14 +121,14 @@ require_once '../lib/FormProcessor.class.php';
 				<div class="center">
 					<?php
     $fp = new FormProcessor('products');
-    echo $fp->build_form();
+    echo $fp->buildForm();
     ?>
 				</div>
 			</div>
 		</section>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script>
-      <?php echo $fp->print_javascript_for_add_page(); ?>
+      <?php echo $fp->printJsForAddPage(); ?>
     </script>
 	</body>
 </html>

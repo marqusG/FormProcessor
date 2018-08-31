@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 'on');
 header('Content-type: text/html; charset=utf-8');
 require_once '../lib/FormProcessor.class.php';
-$item_id = filter_input(INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT);
+$itemId = filter_input(INPUT_POST, 'itemId', FILTER_SANITIZE_NUMBER_INT);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -126,8 +126,8 @@ $item_id = filter_input(INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT);
 			<div class="container">
 				<div class="center">
 					<?php
-    $fp = new FormProcessor('products', $item_id);
-    echo $fp->build_form();
+    $fp = new FormProcessor('products', $itemId);
+    echo $fp->buildForm();
     ?>
 				</div>
 			</div>
@@ -135,8 +135,7 @@ $item_id = filter_input(INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT);
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script>
       <?php 
-      echo $fp->print_javascript_for_add_page();
-      echo $fp->print_javascript_for_edit_page();
+      echo $fp->printJsForEditPage();
       ?>
     </script>
 	</body>

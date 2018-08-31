@@ -985,12 +985,7 @@ FRM;
                 }
             }
         }
-
-        if ($this->config['translation']['multilanguage']) {
-            $this->newItemToTranslate($post);
-        }
-
-        // return $this->model->insert($post, $this->itemId);
+        return $this->model->insert($post, $this->itemId);
     }
 
     public function newItemToTranslate($data)
