@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 'on');
-require_once '../lib/FormTable.class.php';
+require_once 'FormProcessor/FormTable.class.php';
 header('Content-type: text/html; charset=utf-8');
 session_start();
  ?>

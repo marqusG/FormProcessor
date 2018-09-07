@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 'on');
 header('Content-type: text/html; charset=utf-8');
-require_once '../lib/FormProcessor.class.php';
+require_once 'FormProcessor/FormProcessor.class.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

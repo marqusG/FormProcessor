@@ -791,7 +791,6 @@ FRM;
                 }
             }
         }
-
         return $root;
     }
 
@@ -1027,7 +1026,7 @@ FRM;
         if (empty($docName) || empty($itemId)) {
             return;
         }
-        $documents = $this->model->getFfiles('documents', $itemId);
+        $documents = $this->model->getFiles('documents', $itemId);
         $docs = explode(';', $documents);
         $key = array_search($docName, $docs);
         array_splice($docs, $key, 1);

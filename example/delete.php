@@ -2,14 +2,15 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 'on');
 header('Content-type: text/html; charset=utf-8');
-$item_id = filter_input(INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT);
+$itemId = filter_input(INPUT_POST, 'itemId', FILTER_SANITIZE_NUMBER_INT);
 ?>
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>Delete</title>
-		<style>
-		input[type="submit"]{
+
+<head>
+    <title>Delete</title>
+    <style>
+        input[type="submit"]{
 			border: none;
 			background: none;
 			background-color: red;
@@ -30,34 +31,36 @@ $item_id = filter_input(INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT);
 			text-decoration: none;
 		}
 		</style>
-  </head>
-	<body>
-    <header id="header">
-		</header>
-		<section id="content">
-			<div class="container">
-				<div class="center">
+</head>
 
-<?php
-if (isset($item_id) && !isset($confirm)) {
+<body>
+    <header id="header">
+    </header>
+    <section id="content">
+        <div class="container">
+            <div class="center">
+
+                <?php
+if (isset($itemId) && !isset($confirm)) {
     ?>
-		<center>
-<form method="post" action="delitem.php">
-  <label>
-      Are you sure you want to delete this record?
-  </label>
-	<br />
-	<br />
-  <input type="hidden" value="<?php echo $item_id; ?>" name="item_id" />
-  <input type="submit" value="Yes, delete it!" name="confirm" />
-  <a class="btn-cancel" href="manage.php">Let me think about</a>
-</form>
-</center>
-<?php
+                <center>
+                    <form method="post" action="delitem.php">
+                        <label>
+                            Are you sure you want to delete this record?
+                        </label>
+                        <br />
+                        <br />
+                        <input type="hidden" value="<?php echo $itemId; ?>" name="itemId" />
+                        <input type="submit" value="Yes, delete it!" name="confirm" />
+                        <a class="btn-cancel" href="manage.php">Let me think about</a>
+                    </form>
+                </center>
+                <?php
 }
 ?>
+            </div>
         </div>
-      </div>
     </section>
-  </body>
+</body>
+
 </html>
