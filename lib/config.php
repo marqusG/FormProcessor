@@ -79,9 +79,6 @@ $config = [
         'hiddenInputs' => [
             'products' => [],
         ], //inputs you want in the form but that you want to keep hidden
-        'identifiers' => [
-            'products' => 'name',
-        ],
         'siteUrl' => '', //you can set here the relative path to diplay a preview of the files that are in uploading queue or to display the files already uploaded
         'rootTargetDir' => '', //FormPrpcessor will create directories to hold uploaded files using the columns names provided in the array 'upload'; in this example it will create the directories 'pictures' and 'documents'; these directories will be create by default in your document root (ie www.example.com/pictures). If you set rootTargetDir, its value will be used to creates files directories within the path set here (ie www.example.com/FormBuilder/pictures); you can pass this value dinamically when you instanciate the object of class FormSaver. This can be useful if you want to save files in a user specific subdirectoriy, for instance.
         'validExtensions' => [
