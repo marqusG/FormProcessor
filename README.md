@@ -57,9 +57,9 @@ and it is not really part of the package.
 To illustrate the use of these classes I have included a full working example.
 To see it in action you have to use the 2 sql files provided in the folder 'db'
 and create the 2 table 'products' and 'category' in your local or remote server.
-Then you have to upload to your server the 2 folders 'lib' and 'example' and
+Then you have to upload to your server the content of the 'example' folder and
 finally just set the values required for the database connection in the
-config.php file. Now you're ready to go to <yourserver>/manage.php.
+config.php file and the correct siteUrl. Now you're ready to go to <yourserver>/manage.php.
 
 I plan to write a more detailed description in the next weeks and even to
 create a mini website, even if I prefer to work to improve the class itself
