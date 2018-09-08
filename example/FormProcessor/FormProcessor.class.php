@@ -148,7 +148,6 @@ class FormProcessor
      */
     public function __construct($tableName, $itemId = null)
     {
-        $config = require 'config.php';
         $this->config = require 'config.php';
         $this->tableName = $tableName;
         $this->siteUrl = isset($config['general']['siteUrl']) ? $config['general']['siteUrl'] : '';
@@ -963,7 +962,6 @@ FRM;
         if (isset($this->config['general']['upload'][$this->tableName])) {
             foreach ($this->config['general']['upload'][$this->tableName] as $ft) {
                 if (!empty($_FILES["$ft"]['name'][0])) {
-                    echo 'files!<br>';
                     $default = null;
                     if (isset($post['default'])) {
                         $default = $post['default'];

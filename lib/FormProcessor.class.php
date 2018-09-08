@@ -964,7 +964,6 @@ FRM;
         if (isset($this->config['general']['upload'][$this->tableName])) {
             foreach ($this->config['general']['upload'][$this->tableName] as $ft) {
                 if (!empty($_FILES["$ft"]['name'][0])) {
-                    echo 'files!<br>';
                     $default = null;
                     if (isset($post['default'])) {
                         $default = $post['default'];
