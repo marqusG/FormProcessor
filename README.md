@@ -59,7 +59,7 @@ To see it in action you have to use the 2 sql files provided in the folder 'db'
 and create the 2 table 'products' and 'category' in your local or remote server.
 Then you have to upload to your server the content of the 'example' folder and
 finally just set the values required for the database connection in the
-config.php file and the correct siteUrl. Now you're ready to go to <yourserver>/manage.php.
+config.php file and the correct siteUrl. Now you're ready to go to yourserver.com/manage.php.
 
 I plan to write a more detailed description in the next weeks and even to
 create a mini website, even if I prefer to work to improve the class itself
