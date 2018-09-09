@@ -5,6 +5,8 @@ A class to perform CRUD ops easily and quickly
 operations. More precisely, it allows the user to add, edit and delete records
 to/from a specific table.
 
+You can visit <a href="https://formprocessor.codingfix.com">this page</a> to get more details.
+
 #Update 7 september 2018
 Fixed residual underscore names in some file (delitem.php, delete.php, edit.php etc.)
 Changed example logic: before, example files used the classes in 'lib' folder but this made me implement wrong logic for config file. Now in example folder you find a FormProcessor folder which contains classes used by the example files (like normally we'd have in real world.
