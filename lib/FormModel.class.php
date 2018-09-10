@@ -32,16 +32,11 @@ class FormModel extends DbModel
      */
     public function getItemData($tableName, $itemId)
     {
-        $query = "SELECT * from $tableName WHERE id='$itemId'";
-        $result = $this->db->query($query);
-        $a = array();
-        if ($result) {
-            while ($row = $result->fetch_assoc()) {
-                array_push($a, $row);
-            }
-        }
 
-        return $a;
+        $stmt = $this->db->prepare("SELECT * from $tableName WHERE id= :itemId");
+        $stmt->bindParam(':itemId', $itemId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
     /**
@@ -53,14 +48,13 @@ class FormModel extends DbModel
      */
     public function getFiles($fileType, $itemId)
     {
-        $query = "SELECT $fileType FROM $this->tableName WHERE id='$itemId'";
-        $result = $this->db->query($query);
-        if ($result) {
-            $row = mysqli_fetch_row($result);
-
-            return $row[0];
+        $stmt = $this->db->prepare("SELECT $fileType from $tableName WHERE id= :itemId");
+        $stmt->bindParam(':itemId', $itemId, PDO::PARAM_INT);
+        $stmt->execute();
+        $row = $stmt->fetch();
+        if ($row) {
+            return $row[$fileType];
         }
-
         return false;
     }
 
@@ -76,25 +70,38 @@ class FormModel extends DbModel
     {
         $columns = '';
         $values = '';
+        $placeholders = '';
+        foreach ($data as $key => $value) {
+            $columns .= "$key,";
+            $values .= "$value,";
+            $placeholders .= ":$key,";
+        }
+        $columns = rtrim($columns, ',');
+        $values = rtrim($values, ',');
+        $placeholders = rtrim($placeholders, ',');
         if (!isset($itemId)) {
-            foreach ($data as $k => $v) {
-                $columns .= "$k,";
-                $values .= "'$v',";
-            }
-            $columns = rtrim($columns, ',');
-            $values = rtrim($values, ',');
-            $query = "INSERT INTO $this->tableName ($columns) VALUES($values)";
+            $stmt = $this->db->prepare("INSERT INTO $this->tableName ($columns) VALUES($placeholders)");
         } else {
             $query = "UPDATE $this->tableName SET ";
-            foreach ($data as $k => $v) {
-                $query .= "$k='$v',";
+            foreach ($data as $key => $value) {
+                $query .= "$key=':$key',";
             }
             $query = rtrim($query, ',');
-            $query .= " WHERE id='$itemId'";
+            $query .= " WHERE id= :itemId";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':itemId', $itemId);
         }
-        $this->db->query($query);
+        // notice the & in foreach clause for $value
+        // it is required otherwise only the last value is used
+        // binParam need by reference: http: //www.php.net/manual/fr/pdostatement.bindparam.php#98145
+        foreach ($data as $key => &$value) {
+            $stmt->bindParam(':' . $key, $value);
+        }
+        $stmt->execute();
+        // to check parameterized query
+        // $stmt->debugDumpParams();
 
-        return $this->db->insert_id;
+        return $this->db->lastInsertId();
     }
 
     /**
@@ -106,8 +113,10 @@ class FormModel extends DbModel
      */
     public function deleteItem($itemId)
     {
-        $query = "DELETE FROM $this->tableName WHERE id='$itemId'";
-        $this->db->query($query);
+        $query = "DELETE FROM $this->tableName WHERE id = :itemId";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':itemId', $itemId);
+        $stmt->execute();
     }
 
     /**
@@ -120,8 +129,11 @@ class FormModel extends DbModel
      */
     public function deletePicture($pictures, $itemId)
     {
-        $query = "UPDATE $this->tableName SET pictures='$pictures' WHERE id='$itemId'";
-        $this->db->query($query);
+        $query = "UPDATE $this->tableName SET pictures = :pictures WHERE id = :itemId";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':pictures', $pictures);
+        $stmt->bindParam(':itemId', $itemId);
+        $stmt->execute();
     }
 
     /**
@@ -134,7 +146,10 @@ class FormModel extends DbModel
      */
     public function deleteDocument($documents, $itemId)
     {
-        $query = "UPDATE $this->tableName SET documents='$documents' WHERE id='$itemId'";
-        $this->db->query($query);
+        $query = "UPDATE $this->tableName SET documents = :documents WHERE id = :itemId";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':documents', $documents);
+        $stmt->bindParam(':itemId', $itemId);
+        $stmt->execute();
     }
 }

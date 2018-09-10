@@ -7,6 +7,12 @@ to/from a specific table.
 
 You can visit <a href="https://formprocessor.codingfix.com">this page</a> to get more details.
 
+#Update 10 september 2018
+- Added a new class just to manage the database connection a singleton
+- Migrated DbModel and FormModel classes from mysqli to PDO
+- Added the new setting 'dbDriver' to config.php in order to allow to choose which database driver must be used
+- Converted all queries to prepared statements to improve security
+
 #Update 7 september 2018
 Fixed residual underscore names in some file (delitem.php, delete.php, edit.php etc.)
 Changed example logic: before, example files used the classes in 'lib' folder but this made me implement wrong logic for config file. Now in example folder you find a FormProcessor folder which contains classes used by the example files (like normally we'd have in real world.

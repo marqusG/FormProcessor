@@ -1,16 +1,17 @@
 <?php
 
 /**
- * Class FormModel.
+ * Class DbModel.
  *
  * @author Marco Gasi
  * @author blog codingfix.com
  *
- * FormModel is the helper class to manage the database operations
+ * DbModel is the helper class to manage the database operations
  */
 /**
  * [DbModel provides general methods to manage database].
  */
+require_once 'dbConnection.class.php';
 class DbModel
 {
     protected $db;
@@ -20,11 +21,8 @@ class DbModel
     {
         $config = require 'config.php';
         $this->tableName = $tableName;
-        $this->db = new mysqli($config['database']['dbHost'], $config['database']['dbUsername'], $config['database']['dbPassword'], $config['database']['dbName']);
-        if ($this->db->connect_error) {
-            die('Connect Error: '.$this->db->connect_error);
-        }
-        $this->db->set_charset('utf8');
+        $this->db = DbConnection::getInstance();
+        DbConnection::setCharsetEncoding();
     }
 
     /**
@@ -36,19 +34,15 @@ class DbModel
      *
      * @return [array] [column names and values]
      */
-    public function getTableValues($table, $orderby = '', $orderdir = '')
+    public function getTableValues($table, $orderBy = '', $orderDir = '')
     {
-        $order_by = !empty($orderby) ? "ORDER BY $orderby $orderdir" : '';
-        $query = "SELECT * FROM $table $order_by";
-        $result = $this->db->query($query);
-        $a = array();
-        if ($result) {
-            while ($row = $result->fetch_assoc()) {
-                array_push($a, $row);
-            }
-        }
-
-        return $a;
+        $orderDir = !empty($orderDir) ? strip_tags(htmlspecialchars($orderDir)) : '';
+        $orderBy = !empty($orderBy) ? strip_tags(htmlspecialchars($orderBy)) : '';
+        $query = "SELECT * FROM $table";
+        $query .= !empty($orderBy) ? " ORDER BY $orderBy $orderDir" : '';
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
     /**
@@ -61,14 +55,8 @@ class DbModel
     public function getTableStructure($table)
     {
         $query = "DESCRIBE $table";
-        $result = $this->db->query($query);
-        $a = array();
-        if ($result) {
-            while ($row = $result->fetch_assoc()) {
-                array_push($a, $row);
-            }
-        }
-
-        return $a;
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 }

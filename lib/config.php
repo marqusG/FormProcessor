@@ -36,6 +36,7 @@
 */
 $config = [
     'database' => [
+        'dbDriver' => '',
         'dbHost' => 'localhost',
         'dbUsername' => '',
         'dbPassword' => '',
